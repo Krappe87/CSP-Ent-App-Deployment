@@ -1,0 +1,14 @@
+{
+  "displayName": "Contoso Portal",
+  "appId": "00000000-0000-0000-0000-000000000000",
+  "delegatedPermissions": [
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceName": "Microsoft Graph",
+      "scopes": [ "openid", "profile", "email", "User.Read" ]
+    }
+  ],
+  "applicationPermissions": [],
+  "userAssignmentRequired": false,
+  "source": "Example only. Copy to config/apps/<name>.json and replace appId and scopes, or generate it with scripts/New-TargetAppProfile.ps1 (see docs/SETUP.md, step 6)."
+}
