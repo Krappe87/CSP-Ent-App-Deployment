@@ -41,10 +41,11 @@ Each failed tenant in the report has `Error` and `Hint` columns. Look up the err
 | `API '…' has no service principal in this tenant` | The profile includes a non-Graph API that doesn't exist in that tenant | Usually means the profile came from a tenant with extra services. Remove that entry if the app doesn't need it |
 | `Application permission '…' does not exist` | Typo or renamed role in `applicationPermissions` | Rebuild the profile with `-ReferenceTenantId` |
 
-## After deployment: users still see a prompt
+## After deployment: can't find the app, or users still see a prompt
 
 | Symptom | Cause | Fix |
 |---|---|---|
+| Report says `Created` / `Exists`, but the app isn't in **Enterprise applications** | The list's default filter (*Application type == Enterprise Applications*) only shows service principals tagged `WindowsAzureActiveDirectoryIntegratedApp`. Earlier versions of this script created apps without that tag. The app was still there and working, just hidden | Set the filter to **All applications** and search by the app ID. Re-run the current script for that tenant: it adds the tag (`Exists (now listed)`). Also check the portal is open in the right directory (top-right corner), and remember the name comes from the vendor's registration, not your profile |
 | Users see a consent screen listing permissions | The app requests a scope that isn't in your profile, e.g. `offline_access` | Rebuild the profile from the login URL (SETUP step 6, option A) and re-run. Only the missing scope is added |
 | Users see *Need admin approval* | Same as above, in a tenant where user consent is disabled | Same fix |
 | *AADSTS50105: … not assigned to a role for the application* | *Assignment required* is **Yes** in that tenant | Keep `userAssignmentRequired: false` in the profile and re-run, or assign users or groups to the app |

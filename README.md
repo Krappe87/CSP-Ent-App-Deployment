@@ -107,8 +107,8 @@ Each run writes a CSV report to `reports/`, one row per tenant per app, with the
 
 ```
 config/
-  deployer.json               written by New-DeployerApp.ps1 (tenant ID + app ID, no secrets)
-  apps/<name>.json            one profile per app to deploy (written by New-TargetAppProfile.ps1)
+  deployer.json               written by New-DeployerApp.ps1 (tenant ID + app ID, no secrets; git-ignored)
+  apps/<name>.json            one profile per app to deploy (written by New-TargetAppProfile.ps1; git-ignored)
   app-profile.example.json    hand-editable example profile
 scripts/
   New-DeployerApp.ps1         one-time: register the deployer app in the partner tenant

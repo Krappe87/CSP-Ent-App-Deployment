@@ -182,11 +182,26 @@ function Install-TargetApp {
 
     try {
         # 3. The enterprise app itself: a service principal for the vendor's multi-tenant app.
+        #    Entra's Enterprise applications list (default filter) only shows service principals tagged
+        #    WindowsAzureActiveDirectoryIntegratedApp. Consent through the UI sets it; a bare Graph create does not.
+        $listedTag = 'WindowsAzureActiveDirectoryIntegratedApp'
         $sp = Get-ServicePrincipalByAppId -TenantId $tid -AppId $Target.appId
         if ($sp) {
             $row.EnterpriseApp = 'Exists'
+            if ($listedTag -notin @($sp.tags)) {
+                if ($cmdlet.ShouldProcess($label, "Show '$($Target.displayName)' in the Enterprise applications list")) {
+                    # PATCH replaces the whole tags collection, so keep the existing tags.
+                    $tags = @(@($sp.tags) + $listedTag | Where-Object { $_ })
+                    $null = Invoke-Graph -TenantId $tid -Method PATCH -Path "/servicePrincipals/$($sp.id)" -Body @{ tags = $tags }
+                    $row.EnterpriseApp = 'Exists (now listed)'
+                    $changed = $true
+                } else {
+                    $row.EnterpriseApp = 'Exists (WouldList)'
+                    $pending = $true
+                }
+            }
         } elseif ($cmdlet.ShouldProcess($label, "Create enterprise app '$($Target.displayName)'")) {
-            $sp = Invoke-Graph -TenantId $tid -Method POST -Path '/servicePrincipals' -Body @{ appId = $Target.appId }
+            $sp = Invoke-Graph -TenantId $tid -Method POST -Path '/servicePrincipals' -Body @{ appId = $Target.appId; tags = @($listedTag) }
             $row.EnterpriseApp = 'Created'
             $changed = $true
             $spIsNew = $true

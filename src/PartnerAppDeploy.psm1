@@ -411,7 +411,7 @@ function Get-ServicePrincipalByAppId {
     param(
         [Parameter(Mandatory)][string]$TenantId,
         [Parameter(Mandatory)][string]$AppId,
-        [string]$Select = 'id,appId,displayName,appRoleAssignmentRequired,accountEnabled'
+        [string]$Select = 'id,appId,displayName,appRoleAssignmentRequired,accountEnabled,tags'
     )
     $result = Invoke-Graph -TenantId $TenantId -Path "/servicePrincipals?`$filter=appId eq '$AppId'&`$select=$Select"
     @($result.value) | Select-Object -First 1

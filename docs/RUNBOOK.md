@@ -29,7 +29,7 @@ Pick a friendly customer, or a test tenant you manage through GDAP.
 
 Open the Entra admin center for that customer. In Partner Center: *Customers → (customer) → Service management → Microsoft Entra ID*.
 
-1. **Enterprise applications** → clear the *Application type* filter → search for the app. It should be listed.
+1. **Enterprise applications** → set the *Application type* filter to **All applications** → search for the app by its **Application ID** (the `appId` in your profile). Search by ID because the name shown comes from the vendor's registration, not your profile's `displayName`.
 2. Open it → **Permissions → Admin consent**. The scopes from your profile should be listed as granted by an admin.
 3. **Properties**: *Enabled for users to sign-in?* **Yes**, and *Assignment required?* **No** (unless your profile says otherwise).
 
@@ -92,7 +92,7 @@ Every run writes `reports/deploy-<timestamp>.csv` with **one row per tenant per 
 | `App` | The profile's `displayName` |
 | `Result` | `Deployed` (something changed) · `AlreadyDone` (nothing needed) · `WhatIf` (preview) · `Skipped` (you said no at a `-Confirm` prompt) · `Failed` |
 | `DeployerConsent` | `Granted` · `AlreadyPresent` · `Refreshed` (the deployer's scopes were updated) · `NotNeeded` (partner tenant) · `Skipped` |
-| `EnterpriseApp` | `Created` · `Exists` · `WouldCreate` |
+| `EnterpriseApp` | `Created` · `Exists` · `Exists (now listed)` (tag added so it shows in the Enterprise applications list) · `WouldCreate` |
 | `DelegatedConsent` | Per API: `Granted` · `OK` · `Updated (+scopes)` · `WouldGrant` |
 | `AppPermissions` | Per role: `Granted` · `OK` · `WouldGrant`, or `None requested` |
 | `UserAssignment` | `NotRequired` · `Required` · `Changed to …` · `NotManaged` |

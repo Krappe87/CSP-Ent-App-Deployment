@@ -1,2 +1,6 @@
 # Per-run deployment reports (contain customer tenant names and IDs)
 reports/
+
+# Your own environment: partner tenant + deployer app IDs, and the app profiles you deploy
+config/deployer.json
+config/apps/*.json
